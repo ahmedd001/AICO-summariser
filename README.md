@@ -24,7 +24,7 @@ source aicoenv/bin/activate  # On Windows: aicoenv\Scripts\activate
 
 3. **Install Dependencies**
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt # there are unused dpependices but its better to get them
 ```
 
 4. **Configure Environment**
@@ -65,7 +65,7 @@ Example request:
 ```json
 {
     "url": "https://example.com",
-    "question": "What is the main topic?" //only url will also work , question is optional but usefuk
+    "question": "What is the main topic?"//only url will also work,question is optional but useful
 }
 ```
 
