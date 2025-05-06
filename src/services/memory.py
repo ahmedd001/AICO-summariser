@@ -1,25 +1,27 @@
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import ConversationChain
 from langchain_openai import ChatOpenAI
-import os
 from dotenv import load_dotenv
 
-from pathlib import Path
-env_path = Path(__file__).resolve().parent.parent.parent / ".env"
-load_dotenv(dotenv_path=env_path)
+from src.config import settings
 
-api_key = os.getenv("OPENAI_API_KEY")
-assert api_key, "OPENAI_API_KEY not set in .env file!"
+# Load environment variables from root .env file
+load_dotenv()
 
-memory = ConversationBufferWindowMemory(k=3, return_messages=True)
+# Initialize memory with window size from settings
+memory = ConversationBufferWindowMemory(
+    k=settings.MEMORY_WINDOW_SIZE,
+    return_messages=True
+)
 
+# Initialize conversation chain
 conversation = ConversationChain(
-    llm=ChatOpenAI(temperature=0, openai_api_key=api_key),
+    llm=ChatOpenAI(
+        openai_api_key=settings.OPENAI_API_KEY,
+        temperature=settings.OPENAI_TEMPERATURE,
+        model_name=settings.OPENAI_MODEL,
+        max_tokens=settings.MAX_OUTPUT_TOKENS
+    ),
     memory=memory,
     verbose=True
 )
-
-
-def print_memory():
-    for msg in memory.chat_memory.messages:
-        print(f"{msg.type.upper()}: {msg.content}")
